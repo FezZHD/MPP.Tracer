@@ -52,7 +52,11 @@ namespace Tracer
             {
                 StackTrace stackTrace = new StackTrace();
                 var currentMethod = stackTrace.GetFrame(1).GetMethod();
-                var traceMethodInfo = new TraceMethodInfo(currentMethod.Name, currentMethod.DeclaringType.ToString(), Stopwatch.StartNew(), (uint) currentMethod.GetParameters().Length, Thread.CurrentThread.ManagedThreadId);
+                var traceMethodInfo = new TraceMethodInfo(currentMethod.Name, 
+                    (currentMethod.DeclaringType != null)?currentMethod.DeclaringType.ToString():null, 
+                    Stopwatch.StartNew(), 
+                    (uint) currentMethod.GetParameters().Length, 
+                    Thread.CurrentThread.ManagedThreadId);
                 _calledMethodStack.Push(traceMethodInfo);
                 _traceResult.AddToNode(traceMethodInfo);
             }
