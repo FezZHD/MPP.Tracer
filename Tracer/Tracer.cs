@@ -4,6 +4,7 @@ using System.Threading;
 using Tracer.ImplementationClasses;
 using Tracer.Interfaces;
 using Tracer.Types;
+using System.Collections.Concurrent;
 
 namespace Tracer
 {
@@ -31,14 +32,14 @@ namespace Tracer
         private readonly object _stopLockObject = new object();
         private static readonly object InstanceLockObject = new object();
 
-        private readonly Stack<TraceMethodInfo> _calledMethodStack; 
+        private readonly ConcurrentStack<TraceMethodInfo> _calledMethodStack; 
 
         private TraceResult _traceResult;
 
         private Tracer()
         {
             _traceResult = new TraceResult();
-            _calledMethodStack = new Stack<TraceMethodInfo>();
+            _calledMethodStack = new ConcurrentStack<TraceMethodInfo>();
         }
 
 
@@ -64,7 +65,14 @@ namespace Tracer
         {
             lock (_stopLockObject)
             {
-                  _traceResult.RemoveFromStack(_calledMethodStack.Pop());
+                bool isPoped = false;
+                TraceMethodInfo headStackMethodInfo;
+                do
+                {
+                    if (_calledMethodStack.TryPop(out headStackMethodInfo))
+                        isPoped = true;
+                } while (!isPoped);    
+                _traceResult.RemoveFromStack(headStackMethodInfo);
             }
         }
 

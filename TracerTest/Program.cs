@@ -13,11 +13,12 @@ namespace TracerTest
             object checkValue = 0; 
             Thread testThread = new Thread(() => ThreadTestMethod(out checkValue));     
             testThread.Start();
-            testThread.Join();
+            //testThread.Join();
             AnotherTestMethod();
             Tracer.Tracer.Instance.StopTrace();
             Console.WriteLine("End");
             TraceResult testResult = Tracer.Tracer.Instance.GetTraceResult();
+            Thread.Sleep(3000);
             Console.ReadLine();
         }
 
@@ -53,7 +54,6 @@ namespace TracerTest
         {
             Tracer.Tracer.Instance.StartTrace();
             Thread.Sleep(2000);
-           
             Tracer.Tracer.Instance.StopTrace();
         }
 
