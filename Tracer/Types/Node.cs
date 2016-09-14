@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tracer.Types
 {
-    class Node
+    public class Node
     {
         public TraceMethodInfo NodeInfo { get; private set; }
 
