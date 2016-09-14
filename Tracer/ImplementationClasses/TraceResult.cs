@@ -11,7 +11,8 @@ namespace Tracer.ImplementationClasses
 {
     public class TraceResult
     {
-        private List<TraceMethodInfo> _stackTracerList = new List<TraceMethodInfo>();
+
+        private readonly List<TraceMethodInfo> _stackTracerList = new List<TraceMethodInfo>();
 
         private static Dictionary<int, Node> _threadDictionaryInstance;
         private static readonly object LockAddObject = new object();
@@ -41,22 +42,38 @@ namespace Tracer.ImplementationClasses
                 TraceMethodInfo lastMethod = _stackTracerList.LastOrDefault(thread => thread.ThreadId == currentTracerInfo.ThreadId);
                 if (lastMethod == null)
                 {
-                    ThreadDictionary.Add(currentTracerInfo.ThreadId, new Node(currentTracerInfo));
-                }
+                    ThreadDictionary.Add(currentTracerInfo.ThreadId, new Node(currentTracerInfo)); 
+                    AddToStack(currentTracerInfo);
+                }               
                 else
                 {
-                    ThreadDictionary[lastMethod.ThreadId].ChildernNodes.Add(new Node(currentTracerInfo));
+                    if (ThreadDictionary[lastMethod.ThreadId].ChildernNodes.Count == 0)
+                    {
+                        ThreadDictionary[lastMethod.ThreadId].ChildernNodes.Add(new Node(currentTracerInfo));
+                    }
+                    else
+                    {
+                        ThreadDictionary[lastMethod.ThreadId].ChildernNodes.Last(method => method.NodeInfo.Equals(lastMethod)).ChildernNodes.Add(new Node(currentTracerInfo));
+                    }
+                    AddToStack(currentTracerInfo);
                 }
             }
         }
 
 
-        public void RemoveFromStack()
+        public void RemoveFromStack(TraceMethodInfo removableMethod)
         {
             lock (LockRemoveObject)
-            {
-                
+            {   
+                removableMethod.MethodWatch.Stop();
+                _stackTracerList.Remove(_stackTracerList[_stackTracerList.Count - 1]);
             }
+        }
+
+
+        private void AddToStack(TraceMethodInfo addingMethod)
+        {
+            _stackTracerList.Add(addingMethod);
         }
     }
 }

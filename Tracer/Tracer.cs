@@ -35,12 +35,14 @@ namespace Tracer
         private readonly object _stopLockObject = new object();
         private static readonly object InstanceLockObject = new object();
 
+        private readonly Stack<TraceMethodInfo> _calledMethodStack; 
 
         private TraceResult _traceResult;
 
         private Tracer()
         {
             _traceResult = new TraceResult();
+            _calledMethodStack = new Stack<TraceMethodInfo>();
         }
 
 
@@ -51,6 +53,8 @@ namespace Tracer
                 StackTrace stackTrace = new StackTrace();
                 var currentMethod = stackTrace.GetFrame(1).GetMethod();
                 var traceMethodInfo = new TraceMethodInfo(currentMethod.Name, currentMethod.DeclaringType.ToString(), Stopwatch.StartNew(), (uint) currentMethod.GetParameters().Length, Thread.CurrentThread.ManagedThreadId);
+                _calledMethodStack.Push(traceMethodInfo);
+                _traceResult.AddToNode(traceMethodInfo);
             }
         }
 
@@ -59,7 +63,7 @@ namespace Tracer
         {
             lock (_stopLockObject)
             {
-                
+                  _traceResult.RemoveFromStack(_calledMethodStack.Pop());
             }
         }
 

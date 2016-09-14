@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracerTest", "TracerTest.csproj", "{37FFBFD0-D8C8-4137-B1CC-3FA377AD3AD3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{71342C6C-A7CE-43EA-BC4B-F477152CC659} = {71342C6C-A7CE-43EA-BC4B-F477152CC659}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer", "..\Tracer\Tracer.csproj", "{71342C6C-A7CE-43EA-BC4B-F477152CC659}"
 EndProject
