@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Formatters\ConsoleFormatter.cs" />
+    <Compile Include="Interfaces\IFormatter.cs" />
     <Compile Include="Types\TraceMethodInfo.cs" />
     <Compile Include="ImplementationClasses\TraceResult.cs" />
     <Compile Include="Interfaces\ITracer.cs" />

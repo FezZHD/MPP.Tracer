@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using Tracer.ImplementationClasses;
+using Tracer.Formatters;
 
 namespace TracerTest
 {
@@ -13,12 +13,11 @@ namespace TracerTest
             object checkValue = 0; 
             Thread testThread = new Thread(() => ThreadTestMethod(out checkValue));     
             testThread.Start();
-            //testThread.Join();
+            testThread.Join();
             AnotherTestMethod();
             Tracer.Tracer.Instance.StopTrace();
-            Console.WriteLine("End");
-            var testResult = Tracer.Tracer.Instance.GetTraceResult();
             Thread.Sleep(3000);
+            PrintResult();
             Console.ReadLine();
         }
 
@@ -72,6 +71,13 @@ namespace TracerTest
             Tracer.Tracer.Instance.StartTrace();
             Thread.Sleep(1000);
             Tracer.Tracer.Instance.StopTrace();
+        }
+
+
+        private static void PrintResult()
+        {
+            var consoleOutput = new ConsoleFormatter();
+            consoleOutput.Output();
         }
     }
 }
