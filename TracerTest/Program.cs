@@ -41,7 +41,9 @@ namespace TracerTest
         private static void ThreadTestMethod(out object checkValue)
         {
             Tracer.Tracer.Instance.StartTrace();
-            checkValue = 228;
+            checkValue = 228; 
+            InThreadTest(1, 2);
+            InThreadSecondMethod();
             Thread.Sleep(1500);
             Tracer.Tracer.Instance.StopTrace();
         }
@@ -51,6 +53,24 @@ namespace TracerTest
         {
             Tracer.Tracer.Instance.StartTrace();
             Thread.Sleep(2000);
+           
+            Tracer.Tracer.Instance.StopTrace();
+        }
+
+
+        private static void InThreadTest(int firstValue, int secondValue)
+        {
+            Tracer.Tracer.Instance.StartTrace();
+            int result = firstValue + secondValue;
+            Thread.Sleep(1500);
+            Tracer.Tracer.Instance.StopTrace();
+        }
+
+
+        private static void InThreadSecondMethod()
+        {
+            Tracer.Tracer.Instance.StartTrace();
+            Thread.Sleep(1000);
             Tracer.Tracer.Instance.StopTrace();
         }
     }
