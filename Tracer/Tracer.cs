@@ -7,10 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Tracer.ImplementationClasses;
 using Tracer.Interfaces;
+using Tracer.Types;
 
 namespace Tracer
 {
-    public class Tracer:ITracer
+    public class Tracer : ITracer
     {
 
         private static Tracer _instance;
@@ -35,31 +36,37 @@ namespace Tracer
         private static readonly object InstanceLockObject = new object();
 
 
-        private Tracer() { }
+        private TraceResult _traceResult;
+
+        private Tracer()
+        {
+            _traceResult = new TraceResult();
+        }
 
 
         public void StartTrace()
         {
             lock (_startLockObject)
             {
-                //Stopwatch.StartNew();
                 StackTrace stackTrace = new StackTrace();
                 var currentMethod = stackTrace.GetFrame(1).GetMethod();
-                //TODO initialize TraceResult class to create treelist for info
+                var traceMethodInfo = new TraceMethodInfo(currentMethod.Name, currentMethod.DeclaringType.ToString(), Stopwatch.StartNew(), (uint) currentMethod.GetParameters().Length, Thread.CurrentThread.ManagedThreadId);
             }
         }
 
 
         public void StopTrace()
         {
-            throw new NotImplementedException();
+            lock (_stopLockObject)
+            {
+                
+            }
         }
 
 
         public TraceResult GetTraceResult()
         {
-            throw new NotImplementedException();
- 
+            return _traceResult;
         }
     }
 }
