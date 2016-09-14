@@ -17,7 +17,7 @@ namespace TracerTest
             AnotherTestMethod();
             Tracer.Tracer.Instance.StopTrace();
             Console.WriteLine("End");
-            TraceResult testResult = Tracer.Tracer.Instance.GetTraceResult();
+            var testResult = Tracer.Tracer.Instance.GetTraceResult();
             Thread.Sleep(3000);
             Console.ReadLine();
         }

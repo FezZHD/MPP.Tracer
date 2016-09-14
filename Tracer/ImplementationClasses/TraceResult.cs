@@ -9,17 +9,16 @@ namespace Tracer.ImplementationClasses
 
         private readonly List<TraceMethodInfo> _stackTracerList = new List<TraceMethodInfo>();
 
-        private static Dictionary<int, Node> _threadDictionaryInstance;
-        private static readonly object LockAddObject = new object();
-        private static readonly object LockRemoveObject = new object();
-        private static readonly object InstanceLock = new object();
+        private Dictionary<int, Node> _threadDictionaryInstance;
+        private readonly object _lockObject = new object();
+        private readonly object _instanceLock = new object();
 
         public Dictionary<int, Node> ThreadDictionary
         {
             get
             {
                 if (_threadDictionaryInstance == null)
-                    lock (InstanceLock)
+                    lock (_instanceLock)
                     {
                         if (_threadDictionaryInstance == null)
                             _threadDictionaryInstance = new Dictionary<int, Node>();
@@ -32,7 +31,7 @@ namespace Tracer.ImplementationClasses
 
         public void AddToNode(TraceMethodInfo currentTracerInfo)
         {
-            lock (LockAddObject)
+            lock (_lockObject)
             {
                 TraceMethodInfo lastMethod = _stackTracerList.LastOrDefault(thread => thread.ThreadId == currentTracerInfo.ThreadId);
                 if (lastMethod == null)
@@ -58,7 +57,7 @@ namespace Tracer.ImplementationClasses
 
         public void RemoveFromStack(TraceMethodInfo removableMethod)
         {
-            lock (LockRemoveObject)
+            lock (_lockObject)
             {   
                 removableMethod.MethodWatch.Stop();
                 _stackTracerList.Remove(_stackTracerList[_stackTracerList.Count - 1]);

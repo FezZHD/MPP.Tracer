@@ -10,7 +10,12 @@ namespace Tracer
 {
     public class Tracer : ITracer
     {
+        private readonly object _lockObject = new object();
+        private static readonly object InstanceLockObject = new object();
 
+        private readonly ConcurrentStack<TraceMethodInfo> _calledMethodStack; 
+
+        private TraceResult _traceResult;
         private static Tracer _instance;
 
         public static Tracer Instance
@@ -28,14 +33,6 @@ namespace Tracer
         }
 
 
-        private readonly object _startLockObject = new object();
-        private readonly object _stopLockObject = new object();
-        private static readonly object InstanceLockObject = new object();
-
-        private readonly ConcurrentStack<TraceMethodInfo> _calledMethodStack; 
-
-        private TraceResult _traceResult;
-
         private Tracer()
         {
             _traceResult = new TraceResult();
@@ -46,7 +43,7 @@ namespace Tracer
         public void StartTrace()
         {
             StackTrace stackTrace = new StackTrace();
-            lock (_startLockObject)
+            lock (_lockObject)
             {
                 
                 var currentMethod = stackTrace.GetFrame(1).GetMethod();
@@ -63,7 +60,7 @@ namespace Tracer
 
         public void StopTrace()
         {
-            lock (_stopLockObject)
+            lock (_lockObject)
             {
                 bool isPoped = false;
                 TraceMethodInfo headStackMethodInfo;
