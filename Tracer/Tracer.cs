@@ -44,9 +44,10 @@ namespace Tracer
 
         public void StartTrace()
         {
+            StackTrace stackTrace = new StackTrace();
             lock (_startLockObject)
             {
-                StackTrace stackTrace = new StackTrace();
+                
                 var currentMethod = stackTrace.GetFrame(1).GetMethod();
                 var traceMethodInfo = new TraceMethodInfo(currentMethod.Name, 
                     (currentMethod.DeclaringType != null)?currentMethod.DeclaringType.ToString():null, 

@@ -42,7 +42,7 @@ namespace Tracer.ImplementationClasses
                 }               
                 else
                 {
-                    if (ThreadDictionary[lastMethod.ThreadId].ChildernNodes.Count == 0)
+                    if ((ThreadDictionary[lastMethod.ThreadId].ChildernNodes.Count == 0) || (lastMethod.Equals(ThreadDictionary[lastMethod.ThreadId].NodeInfo)))
                     {
                         ThreadDictionary[lastMethod.ThreadId].ChildernNodes.Add(new Node(currentTracerInfo));
                     }
