@@ -41,7 +41,7 @@ namespace Tracer.ImplementationClasses
                 {
                     //TODO rewrite logic for adding leaf
                 }
-                AddToStack(currentTracerInfo);S
+                AddToStack(currentTracerInfo);
             }
         }
 
