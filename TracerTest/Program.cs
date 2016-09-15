@@ -34,6 +34,7 @@ namespace TracerTest
         {   
             Tracer.Tracer.Instance.StartTrace();
             Thread.Sleep(1000);
+            InputInputMethod();
             Tracer.Tracer.Instance.StopTrace();
         }
 
@@ -78,6 +79,14 @@ namespace TracerTest
         {
             var consoleOutput = new ConsoleFormatter();
             consoleOutput.Output();
+        }
+
+
+        private static void InputInputMethod()
+        {
+            Tracer.Tracer.Instance.StartTrace();
+            Thread.Sleep(200);
+            Tracer.Tracer.Instance.StopTrace();
         }
     }
 }
