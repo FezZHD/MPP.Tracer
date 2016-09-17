@@ -10,13 +10,13 @@ namespace TracerTest
         {
             Tracer.Tracer.Instance.StartTrace();
             TestMethod();
-            object checkValue = 0; 
-            Thread testThread = new Thread(() => ThreadTestMethod(out checkValue));     
-            testThread.Start();
-            testThread.Join();
-            AnotherTestMethod();
-            Tracer.Tracer.Instance.StopTrace();
+            object checkValue;           
+            Thread testThread = new Thread(() => ThreadTestMethod(out checkValue)); 
+            testThread.Start();  
+            AnotherTestMethod(); 
             Thread.Sleep(3000);
+            Tracer.Tracer.Instance.StopTrace();             
+            testThread.Join();
             PrintResult();
             Console.ReadLine();
         }
@@ -53,7 +53,7 @@ namespace TracerTest
         private static void AnotherTestMethod()
         {
             Tracer.Tracer.Instance.StartTrace();
-            Thread.Sleep(2000);
+            Thread.Sleep(200);
             Tracer.Tracer.Instance.StopTrace();
         }
 

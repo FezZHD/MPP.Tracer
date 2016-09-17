@@ -15,7 +15,7 @@ namespace Tracer
 
         private readonly ConcurrentStack<TraceMethodInfo> _calledMethodStack; 
 
-        private TraceResult _traceResult;
+        private readonly TraceResult _traceResult;
         private static Tracer _instance;
 
         public static Tracer Instance

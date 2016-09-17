@@ -23,7 +23,12 @@ namespace Tracer.Formatters
         {
             string tabsString = new string('\t', (int)tabs);
             tabs++;
-            Console.WriteLine("{0} Method Name: {1}, Class Name: {2}, Time: {3} ms, Parameters: {4}", tabsString, methodeNode.NodeInfo.MethodName, methodeNode.NodeInfo.ClassName, methodeNode.NodeInfo.MethodWatch.Elapsed.Milliseconds, methodeNode.NodeInfo.ParametersCount);
+            Console.WriteLine("{0} Method Name: {1}, Class Name: {2}, Time: {3} ms, Parameters: {4}", 
+                tabsString, 
+                methodeNode.NodeInfo.MethodName, 
+                methodeNode.NodeInfo.ClassName,
+                methodeNode.NodeInfo.MethodWatch.Elapsed.Milliseconds, 
+                methodeNode.NodeInfo.ParametersCount);
             foreach (var leafList in methodeNode.ChildernNodes)
             {
                 PrintMethod(leafList, tabs);
