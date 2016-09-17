@@ -11,9 +11,7 @@ namespace Tracer
     {
         private readonly object _lockObject = new object();
         private static readonly object InstanceLockObject = new object();
-
         private readonly ConcurrentStack<TraceMethodInfo> _calledMethodStack; 
-
         private readonly TraceResult _traceResult;
         private static Tracer _instance;
 

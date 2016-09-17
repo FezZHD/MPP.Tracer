@@ -44,7 +44,7 @@ namespace Tracer.ImplementationClasses
             else
             {
                 Node addingNode;
-                GetLastMethod(lastMethod, out addingNode, ThreadDictionary[lastMethod.ThreadId]);
+                GetLastMethod(lastMethod, ThreadDictionary[lastMethod.ThreadId], out addingNode);
                 addingNode.ChildernNodes.Add(new Node(currentTracerInfo));
             }
             AddToStack(currentTracerInfo);
@@ -64,7 +64,7 @@ namespace Tracer.ImplementationClasses
         }
 
 
-        private void GetLastMethod(TraceMethodInfo methodInfo, out Node lastMethodNode, Node currentNode)//TODO try to make iterator here it future
+        private void GetLastMethod(TraceMethodInfo methodInfo, Node currentNode, out Node lastMethodNode)//TODO try to make iterator here in future
         {
             lastMethodNode = null;
             foreach (Node node in currentNode)
@@ -78,9 +78,9 @@ namespace Tracer.ImplementationClasses
                 {
                     if (lastMethodNode != null)
                         break;
-                    foreach (Node inNode in node.ChildernNodes)
+                    foreach (Node inNodeNodes in node.ChildernNodes)
                     {
-                       GetLastMethod(methodInfo, out lastMethodNode,inNode); 
+                       GetLastMethod(methodInfo, inNodeNodes, out lastMethodNode); 
                     }                    
                 }
             }

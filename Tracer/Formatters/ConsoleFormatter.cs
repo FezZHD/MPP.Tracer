@@ -11,10 +11,10 @@ namespace Tracer.Formatters
 
         public void Format(TraceResult traceResult)
         {
-            foreach (var dictionaryId in traceResult.ThreadDictionary)
+            foreach (var thread in traceResult.ThreadDictionary)
             {
-                Console.WriteLine("Thread {0} Time: {1} ms", dictionaryId.Key, dictionaryId.Value.NodeInfo.MethodWatch.Elapsed.Milliseconds);
-                PrintMethod(dictionaryId.Value, DefaultTabCount);
+                Console.WriteLine("Thread {0} Time: {1} ms", thread.Key, thread.Value.NodeInfo.MethodWatch.Elapsed.Milliseconds);
+                PrintMethod(thread.Value, DefaultTabCount);
             }   
         }
        

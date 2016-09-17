@@ -6,6 +6,7 @@ namespace TracerTest
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             Tracer.Tracer.Instance.StartTrace();
@@ -18,6 +19,7 @@ namespace TracerTest
             Tracer.Tracer.Instance.StopTrace();             
             testThread.Join();
             PrintResult();
+            Save();
             Console.ReadLine();
         }
 
@@ -27,7 +29,6 @@ namespace TracerTest
             Tracer.Tracer.Instance.StartTrace();
             InputTestMethod();
             Tracer.Tracer.Instance.StopTrace();
-
         }
 
         private static void InputTestMethod()
@@ -88,6 +89,13 @@ namespace TracerTest
             Tracer.Tracer.Instance.StartTrace();
             Thread.Sleep(200);
             Tracer.Tracer.Instance.StopTrace();
+        }
+
+
+        private static void Save()
+        {
+            var xmlOutput = new XmlFormatter();
+            xmlOutput.Format(Tracer.Tracer.Instance.GetTraceResult());
         }
     }
 }
