@@ -70,6 +70,7 @@ namespace TracerTest
         private static void InThreadSecondMethod()
         {
             Tracer.Tracer.Instance.StartTrace();
+            InputTestMethod();
             Thread.Sleep(1000);
             Tracer.Tracer.Instance.StopTrace();
         }

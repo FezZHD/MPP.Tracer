@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Tracer.Types;
 
@@ -9,7 +10,6 @@ namespace Tracer.ImplementationClasses
 
         private readonly List<TraceMethodInfo> _stackTracerList = new List<TraceMethodInfo>();
         private Dictionary<int, Node> _threadDictionaryInstance;
-        private readonly object _lockObject = new object();
         private readonly object _instanceLock = new object();
 
         public Dictionary<int, Node> ThreadDictionary
@@ -30,8 +30,6 @@ namespace Tracer.ImplementationClasses
 
         public void AddToNode(TraceMethodInfo currentTracerInfo)
         {
-            lock (_lockObject)
-            {
                 TraceMethodInfo lastMethod = _stackTracerList.LastOrDefault(thread => thread.ThreadId == currentTracerInfo.ThreadId);
                 if (lastMethod == null)
                 {
@@ -40,25 +38,48 @@ namespace Tracer.ImplementationClasses
                 else
                 {
                     //TODO rewrite logic for adding leaf
+                    Node addingNode;
+                    GetLastMethod(lastMethod, out addingNode, ThreadDictionary[lastMethod.ThreadId]);
+                    addingNode.ChildernNodes.Add(new Node(currentTracerInfo));
                 }
                 AddToStack(currentTracerInfo);
-            }
         }
 
 
         public void RemoveFromStack(TraceMethodInfo removableMethod)
-        {
-            lock (_lockObject)
-            {   
+        { 
                 removableMethod.MethodWatch.Stop();
                 _stackTracerList.Remove(_stackTracerList[_stackTracerList.Count - 1]);
-            }
         }
 
 
         private void AddToStack(TraceMethodInfo addingMethod)
         {
             _stackTracerList.Add(addingMethod);
+        }
+
+
+        private void GetLastMethod(TraceMethodInfo methodInfo, out Node lastMethodNode, Node currentNode)
+        {
+            lastMethodNode = null;
+            foreach (Node node in currentNode)
+            {
+                if (node.NodeInfo.Equals(methodInfo))
+                {
+                    lastMethodNode = node;
+                    break;
+                }
+                else
+                {
+                    if (lastMethodNode != null)
+                        break;
+                    foreach (Node inNode in node.ChildernNodes)
+                    {
+                       GetLastMethod(methodInfo, out lastMethodNode,inNode); 
+                    }
+                    
+                }
+            }
         }
     }
 }

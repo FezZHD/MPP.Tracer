@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Tracer.Types
 {
-    public class Node
+    public class Node : IEnumerable
     {
         public TraceMethodInfo NodeInfo { get; private set; }
 
@@ -12,6 +13,11 @@ namespace Tracer.Types
         {
             NodeInfo = currentTraceMethod;
             ChildernNodes = new List<Node>();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            yield return this;
         }
     }
 }
