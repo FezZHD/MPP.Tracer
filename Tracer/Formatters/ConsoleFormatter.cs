@@ -5,19 +5,19 @@ using Tracer.Types;
 
 namespace Tracer.Formatters
 {
-    public class ConsoleFormatter: IFormatter
+    public class ConsoleFormatter: ITraceResultFormatter
     {
-        public void Output()
+        private const uint DefaultTabCount = 0;
+
+        public void Format(TraceResult traceResult)
         {
-            TraceResult traceResult = Tracer.Instance.GetTraceResult();
             foreach (var dictionaryId in traceResult.ThreadDictionary)
             {
-                Console.WriteLine("Thread {0}", dictionaryId.Key);
-                PrintMethod(dictionaryId.Value, 0);
-
-            }
+                Console.WriteLine("Thread {0} Time: {1} ms", dictionaryId.Key, dictionaryId.Value.NodeInfo.MethodWatch.Elapsed.Milliseconds);
+                PrintMethod(dictionaryId.Value, DefaultTabCount);
+            }   
         }
-
+       
 
         private void PrintMethod(Node methodeNode, uint tabs)
         {

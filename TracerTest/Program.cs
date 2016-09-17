@@ -79,7 +79,7 @@ namespace TracerTest
         private static void PrintResult()
         {
             var consoleOutput = new ConsoleFormatter();
-            consoleOutput.Output();
+            consoleOutput.Format(Tracer.Tracer.Instance.GetTraceResult());
         }
 
 

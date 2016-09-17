@@ -40,7 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Formatters\ConsoleFormatter.cs" />
-    <Compile Include="Interfaces\IFormatter.cs" />
+    <Compile Include="Formatters\XmlFormatter.cs" />
+    <Compile Include="Interfaces\ITraceResultFormatter.cs" />
     <Compile Include="Types\TraceMethodInfo.cs" />
     <Compile Include="ImplementationClasses\TraceResult.cs" />
     <Compile Include="Interfaces\ITracer.cs" />

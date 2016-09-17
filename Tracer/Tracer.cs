@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Threading;
 using Tracer.ImplementationClasses;
 using Tracer.Interfaces;
@@ -45,10 +44,9 @@ namespace Tracer
             StackTrace stackTrace = new StackTrace();
             lock (_lockObject)
             {
-                
                 var currentMethod = stackTrace.GetFrame(1).GetMethod();
                 var traceMethodInfo = new TraceMethodInfo(currentMethod.Name, 
-                    (currentMethod.DeclaringType != null)?currentMethod.DeclaringType.ToString():null, 
+                    (currentMethod.ReflectedType != null)?currentMethod.ReflectedType.Name:null, 
                     Stopwatch.StartNew(), 
                     (uint) currentMethod.GetParameters().Length, 
                     Thread.CurrentThread.ManagedThreadId);
