@@ -9,7 +9,7 @@ namespace Tracer.ImplementationClasses
     {
 
         private readonly Dictionary<int, List<TraceMethodInfo>> _stackTraceDictionary = new Dictionary<int, List<TraceMethodInfo>>();
-        private readonly Lazy<Dictionary<int, Node>> _threadDictionaryInstance =new Lazy<Dictionary<int, Node>>(() => new Dictionary<int, Node>());
+        private readonly Lazy<Dictionary<int, Node>> _threadDictionaryInstance = new Lazy<Dictionary<int, Node>>(() => new Dictionary<int, Node>());
 
         public Dictionary<int, Node> ThreadDictionary
         {
