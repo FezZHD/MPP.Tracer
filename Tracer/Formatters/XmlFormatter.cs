@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Tracer.ImplementationClasses;
 using Tracer.Interfaces;
 using Tracer.Types;

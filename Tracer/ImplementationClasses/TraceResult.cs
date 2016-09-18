@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Tracer.Types;
 
@@ -8,21 +9,11 @@ namespace Tracer.ImplementationClasses
     {
 
         private readonly Dictionary<int, List<TraceMethodInfo>> _stackTraceDictionary = new Dictionary<int, List<TraceMethodInfo>>();
-        private Dictionary<int, Node> _threadDictionaryInstance;
-        private readonly object _instanceLock = new object();
+        private static readonly Lazy<Dictionary<int, Node>> ThreadDictionaryInstance =new Lazy<Dictionary<int, Node>>(() => new Dictionary<int, Node>());
 
         public Dictionary<int, Node> ThreadDictionary
         {
-            get
-            {
-                if (_threadDictionaryInstance == null)
-                    lock (_instanceLock)
-                    {
-                        if (_threadDictionaryInstance == null)
-                            _threadDictionaryInstance = new Dictionary<int, Node>();
-                    }
-                return _threadDictionaryInstance;
-            }
+            get { return ThreadDictionaryInstance.Value; }
         }
 
 

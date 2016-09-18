@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using Tracer.ImplementationClasses;
 using Tracer.Interfaces;
@@ -10,23 +11,13 @@ namespace Tracer
     public class Tracer : ITracer
     {
         private readonly object _lockObject = new object();
-        private static readonly object InstanceLockObject = new object();
         private readonly ConcurrentStack<TraceMethodInfo> _calledMethodStack; 
         private readonly TraceResult _traceResult;
-        private static Tracer _instance;
+        private static readonly Lazy<Tracer> LazyInstance = new Lazy<Tracer>(() => new Tracer());
 
         public static Tracer Instance
         {
-            get
-            {
-                if(_instance == null)
-                    lock (InstanceLockObject)
-                    {
-                        if (_instance == null)
-                            _instance = new Tracer();
-                    }
-            return _instance;
-            }
+            get { return LazyInstance.Value; }                 
         }
 
 
