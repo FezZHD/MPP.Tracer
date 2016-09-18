@@ -2,7 +2,7 @@
 
 namespace Tracer.Interfaces
 {
-    interface ITracer
+    internal interface ITracer
     {
         void StartTrace();
 
