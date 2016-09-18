@@ -2,7 +2,6 @@
 using Tracer.ImplementationClasses;
 using Tracer.Interfaces;
 using Tracer.Types;
-using System.Windows.Forms;
 
 namespace Tracer.Formatters
 {
@@ -10,6 +9,13 @@ namespace Tracer.Formatters
     public class XmlFormatter: ITraceResultFormatter
     {
         private XDocument _xmlOutputDocument = new XDocument();
+
+        private readonly string _fileSavePath;
+
+        public XmlFormatter(string fileSavePath)
+        {
+            _fileSavePath = fileSavePath;
+        }
 
         public void Format(TraceResult traceResult)
         {
@@ -23,7 +29,7 @@ namespace Tracer.Formatters
                 root.Add(head);
             }
             _xmlOutputDocument.Add(root);
-            SaveInFile();
+            SaveInFile(_fileSavePath);
         }
 
 
@@ -42,16 +48,9 @@ namespace Tracer.Formatters
         }
 
         
-        private void SaveInFile()
+        private void SaveInFile(string fileName)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "XML|*.xml";
-            saveFileDialog.RestoreDirectory = true;
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                _xmlOutputDocument.Save(saveFileDialog.FileName);
-                MessageBox.Show("Saved");
-            }
+           _xmlOutputDocument.Save(fileName);
         }
     }
 }

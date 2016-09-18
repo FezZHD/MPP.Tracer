@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Forms;
 using Tracer.Formatters;
 
 namespace TracerTest
@@ -94,8 +95,15 @@ namespace TracerTest
 
         private static void Save()
         {
-            var xmlOutput = new XmlFormatter();
-            xmlOutput.Format(Tracer.Tracer.Instance.GetTraceResult());
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "XML|*.xml";
+            saveFileDialog.RestoreDirectory = true;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var xmlOutput = new XmlFormatter(saveFileDialog.FileName);
+                xmlOutput.Format(Tracer.Tracer.Instance.GetTraceResult());
+                MessageBox.Show("Saved");
+            }
         }
     }
 }
