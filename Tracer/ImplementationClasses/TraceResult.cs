@@ -68,7 +68,9 @@ namespace Tracer.ImplementationClasses
                 else
                 {
                     if (lastMethodNode != null)
+                    {
                         break;
+                    }     
                     foreach (Node inNodeNodes in node.ChildernNodes)
                     {
                        GetLastMethod(methodInfo, inNodeNodes, out lastMethodNode); 

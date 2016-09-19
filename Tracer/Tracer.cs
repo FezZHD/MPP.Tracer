@@ -34,11 +34,13 @@ namespace Tracer
             lock (_lockObject)
             {
                 var currentMethod = stackTrace.GetFrame(1).GetMethod();
-                var traceMethodInfo = new TraceMethodInfo(currentMethod.Name, 
-                    (currentMethod.ReflectedType != null)?currentMethod.ReflectedType.Name:null, 
+                var traceMethodInfo = new TraceMethodInfo(
+                    currentMethod.Name, 
+                    (currentMethod.ReflectedType != null) ? currentMethod.ReflectedType.Name : null, 
                     Stopwatch.StartNew(), 
                     (uint) currentMethod.GetParameters().Length, 
-                    Thread.CurrentThread.ManagedThreadId);
+                    Thread.CurrentThread.ManagedThreadId
+                    );
                 _calledMethodStack.Push(traceMethodInfo);
                 _traceResult.AddToNode(traceMethodInfo);
             }
@@ -54,7 +56,10 @@ namespace Tracer
                 do
                 {
                     if (_calledMethodStack.TryPop(out headStackMethodInfo))
-                        isPoped = true;
+                    {
+                        isPoped = true; 
+                        
+                    }          
                 } while (!isPoped);    
                 _traceResult.RemoveFromStack(headStackMethodInfo);
             }

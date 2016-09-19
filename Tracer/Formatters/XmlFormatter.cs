@@ -29,7 +29,7 @@ namespace Tracer.Formatters
                 root.Add(head);
             }
             _xmlOutputDocument.Add(root);
-            SaveInFile(_fileSavePath);
+            SaveInFile();
         }
 
 
@@ -48,9 +48,9 @@ namespace Tracer.Formatters
         }
 
         
-        private void SaveInFile(string fileName)
+        private void SaveInFile()
         {
-           _xmlOutputDocument.Save(fileName);
+           _xmlOutputDocument.Save(_fileSavePath);
         }
     }
 }
