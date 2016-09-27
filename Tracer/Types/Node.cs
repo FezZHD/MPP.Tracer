@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Tracer.Types
 {
-    public class Node : IEnumerable
+    internal class Node : IEnumerable
     {
-        public TraceMethodInfo NodeInfo { get; private set; }
+        internal TraceMethodInfo NodeInfo { get; private set; }
 
-        public List<Node> ChildernNodes { get; private set; }
+        internal List<Node> ChildernNodes { get; private set; }
 
-        public Node(TraceMethodInfo currentTraceMethod)
+        internal Node(TraceMethodInfo currentTraceMethod)
         {
             NodeInfo = currentTraceMethod;
             ChildernNodes = new List<Node>();

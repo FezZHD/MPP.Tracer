@@ -2,20 +2,20 @@
 
 namespace Tracer.Types
 {
-    public class TraceMethodInfo
+    internal class TraceMethodInfo
     {
 
-        public string MethodName { get; private set; }
+        internal string MethodName { get; private set; }
 
-        public string ClassName { get; private set; }
+        internal string ClassName { get; private set; }
 
-        public Stopwatch MethodWatch { get; private set; }
+        internal Stopwatch MethodWatch { get; private set; }
 
-        public uint ParametersCount { get; private set; }
+        internal uint ParametersCount { get; private set; }
 
-        public int ThreadId { get; private set; }
+        internal int ThreadId { get; private set; }
 
-        public TraceMethodInfo(string methodName, string className, Stopwatch methodWatch, uint parametersCount, int treadId)
+        internal TraceMethodInfo(string methodName, string className, Stopwatch methodWatch, uint parametersCount, int treadId)
         {
             MethodName = methodName;
             ClassName = className;

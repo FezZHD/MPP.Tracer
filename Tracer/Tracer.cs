@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 
 namespace Tracer
 {
-    public class Tracer : ITracer
+    public sealed class Tracer : ITracer
     {
         private readonly object _lockObject = new object();
         private readonly ConcurrentStack<TraceMethodInfo> _calledMethodStack; 
@@ -57,8 +57,7 @@ namespace Tracer
                 {
                     if (_calledMethodStack.TryPop(out headStackMethodInfo))
                     {
-                        isPoped = true; 
-                        
+                        isPoped = true;                 
                     }          
                 } while (!isPoped);    
                 _traceResult.RemoveFromStack(headStackMethodInfo);

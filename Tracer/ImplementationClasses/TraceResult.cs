@@ -5,19 +5,19 @@ using Tracer.Types;
 
 namespace Tracer.ImplementationClasses
 {
-    public class TraceResult
+    public sealed class TraceResult
     {
 
         private readonly Dictionary<int, List<TraceMethodInfo>> _stackTraceDictionary = new Dictionary<int, List<TraceMethodInfo>>();
         private readonly Lazy<Dictionary<int, Node>> _threadDictionaryInstance = new Lazy<Dictionary<int, Node>>(() => new Dictionary<int, Node>());
 
-        public Dictionary<int, Node> ThreadDictionary
+        internal Dictionary<int, Node> ThreadDictionary
         {
             get { return _threadDictionaryInstance.Value; }
         }
 
 
-        public void AddToNode(TraceMethodInfo currentTracerInfo)
+        internal void AddToNode(TraceMethodInfo currentTracerInfo)
         {
             TraceMethodInfo lastMethod = null;
             if (_stackTraceDictionary.ContainsKey(currentTracerInfo.ThreadId))
@@ -42,7 +42,7 @@ namespace Tracer.ImplementationClasses
         }
 
 
-        public void RemoveFromStack(TraceMethodInfo removableMethod)
+        internal void RemoveFromStack(TraceMethodInfo removableMethod)
         { 
             removableMethod.MethodWatch.Stop();
             _stackTraceDictionary[removableMethod.ThreadId].Remove(removableMethod);

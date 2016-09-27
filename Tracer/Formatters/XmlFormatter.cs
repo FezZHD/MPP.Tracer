@@ -6,7 +6,7 @@ using Tracer.Types;
 namespace Tracer.Formatters
 {
     
-    public class XmlFormatter: ITraceResultFormatter
+    public sealed class XmlFormatter: ITraceResultFormatter
     {
         private XDocument _xmlOutputDocument = new XDocument();
 

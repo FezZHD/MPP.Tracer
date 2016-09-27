@@ -5,7 +5,7 @@ using Tracer.Types;
 
 namespace Tracer.Formatters
 {
-    public class ConsoleFormatter: ITraceResultFormatter
+    public sealed class ConsoleFormatter: ITraceResultFormatter
     {
         private const uint DefaultTabCount = 0;
 
