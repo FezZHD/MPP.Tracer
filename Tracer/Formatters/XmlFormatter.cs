@@ -8,7 +8,7 @@ namespace Tracer.Formatters
     
     public sealed class XmlFormatter: ITraceResultFormatter
     {
-        private XDocument _xmlOutputDocument = new XDocument();
+        private readonly XDocument _xmlOutputDocument = new XDocument();
 
         private readonly string _fileSavePath;
 
