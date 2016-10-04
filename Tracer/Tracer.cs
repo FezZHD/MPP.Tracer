@@ -4,14 +4,14 @@ using System.Threading;
 using Tracer.ImplementationClasses;
 using Tracer.Interfaces;
 using Tracer.Types;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Tracer
 {
     public sealed class Tracer : ITracer
     {
         private readonly object _lockObject = new object();
-        private readonly ConcurrentStack<TraceMethodInfo> _calledMethodStack; 
+        private readonly Dictionary<int, Stack<TraceMethodInfo>> _calledMethodStack; 
         private readonly TraceResult _traceResult;
         private static readonly Lazy<Tracer> LazyInstance = new Lazy<Tracer>(() => new Tracer());
 
@@ -24,7 +24,7 @@ namespace Tracer
         private Tracer()
         {
             _traceResult = new TraceResult();
-            _calledMethodStack = new ConcurrentStack<TraceMethodInfo>();
+            _calledMethodStack = new Dictionary<int, Stack<TraceMethodInfo>>();
         }
 
 
@@ -40,8 +40,8 @@ namespace Tracer
                     Stopwatch.StartNew(), 
                     (uint) currentMethod.GetParameters().Length, 
                     Thread.CurrentThread.ManagedThreadId
-                    );
-                _calledMethodStack.Push(traceMethodInfo);
+                    );                                                                              
+                AddToStack(traceMethodInfo);
                 _traceResult.AddToNode(traceMethodInfo);
             }
         }
@@ -51,16 +51,8 @@ namespace Tracer
         {
             lock (_lockObject)
             {
-                bool isPoped = false;
-                TraceMethodInfo headStackMethodInfo;
-                do
-                {
-                    if (_calledMethodStack.TryPop(out headStackMethodInfo))
-                    {
-                        isPoped = true;                 
-                    }          
-                } while (!isPoped);    
-                _traceResult.RemoveFromStack(headStackMethodInfo);
+                int currentThread = Thread.CurrentThread.ManagedThreadId;
+                _traceResult.RemoveFromStack(_calledMethodStack[currentThread].Pop());
             }
         }
 
@@ -68,6 +60,16 @@ namespace Tracer
         public TraceResult GetTraceResult()
         {
             return _traceResult;
+        }
+
+
+        private void AddToStack(TraceMethodInfo currentMethodInfo)
+        {
+            if (!_calledMethodStack.ContainsKey(currentMethodInfo.ThreadId))
+            {
+                _calledMethodStack.Add(currentMethodInfo.ThreadId,new Stack<TraceMethodInfo>());
+            }
+            _calledMethodStack[currentMethodInfo.ThreadId].Push(currentMethodInfo);   
         }
     }
 }
