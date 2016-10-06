@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Tracer.Formatters;
@@ -13,12 +16,13 @@ namespace TracerTest
             Tracer.Tracer.Instance.StartTrace();
             TestMethod();
             object checkValue;           
-            Thread testThread = new Thread(() => ThreadTestMethod(out checkValue)); 
+            Thread testThread = new Thread(() => ThreadTestMethod(out checkValue));
             testThread.Start();
             AnotherTestMethod();
             Cycles();
+            CreateCycleThread();
             Thread.Sleep(3000);
-            Tracer.Tracer.Instance.StopTrace();             
+            Tracer.Tracer.Instance.StopTrace();     
             PrintResult();
             Save();
             Console.ReadLine();
@@ -28,6 +32,7 @@ namespace TracerTest
         {
             Thread.Sleep(500);
             Tracer.Tracer.Instance.StartTrace();
+            CreateCycleThread();
             InputTestMethod();
             Tracer.Tracer.Instance.StopTrace();
         }
@@ -35,7 +40,7 @@ namespace TracerTest
         private static void InputTestMethod()
         {   
             Tracer.Tracer.Instance.StartTrace();
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             InputInputMethod();
             Tracer.Tracer.Instance.StopTrace();
         }
@@ -123,6 +128,25 @@ namespace TracerTest
                 xmlOutput.Format(Tracer.Tracer.Instance.GetTraceResult());
                 MessageBox.Show("Saved");
             }
+        }
+
+
+        private static void CreateCycleThread()
+        {
+            Thread cycleThread;
+            for (int i = 0; i < 10; i++)
+            {
+                cycleThread = new Thread(CycleThreadMethod);
+                cycleThread.Start();
+            }
+        }
+
+
+        private static void CycleThreadMethod()
+        {
+            Tracer.Tracer.Instance.StartTrace();
+            Thread.Sleep(200);
+            Tracer.Tracer.Instance.StopTrace();
         }
     }
 }
